@@ -33,7 +33,10 @@ window.addEventListener("keydown", changeDirection);
 createSnake();
 
 const keepDrawing = () => {
-  console.log("game started");
+  // reset canvas
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   for (let i = 0; i < snake.length; i++) {
     if (i === 0) {
       ctx.fillStyle = "yellowGreen";
@@ -41,8 +44,18 @@ const keepDrawing = () => {
       ctx.fillStyle = "#004B97";
     }
 
-    ctx.fillRect(snake[i].x, snake[i].y, unit, unit);
+    // check if the snake is over the canvas boarder
+    if (snake[0].x >= canvas.width) {
+      snake[0].x = 0;
+    } else if (snake[0].x < 0) {
+      snake[0].x = canvas.width - unit;
+    } else if (snake[0].y >= canvas.height) {
+      snake[0].y = 0;
+    } else if (snake[0].y < 0) {
+      snake[0].y = canvas.height - unit;
+    }
 
+    ctx.fillRect(snake[i].x, snake[i].y, unit, unit);
     ctx.strokeStyle = "#fff";
     ctx.strokeRect(snake[i].x, snake[i].y, unit, unit);
   }

@@ -15,6 +15,21 @@ const createSnake = () => {
   ];
 };
 
+const changeDirection = (e) => {
+  if (e.key === "ArrowUp" && direction !== "Down") {
+    direction = "Up";
+  } else if (e.key === "ArrowDown" && direction !== "Up") {
+    direction = "Down";
+  } else if (e.key === "ArrowLeft" && direction !== "Right") {
+    direction = "Left";
+  } else if (e.key === "ArrowRight" && direction !== "Left") {
+    direction = "Right";
+  }
+};
+
+// check if player pressed one of the directions
+window.addEventListener("keydown", changeDirection);
+
 createSnake();
 
 const keepDrawing = () => {
@@ -41,9 +56,24 @@ const keepDrawing = () => {
       x: newSnakeX + unit,
       y: newSnakeY,
     };
+  } else if (direction === "Left") {
+    newHead = {
+      x: newSnakeX - unit,
+      y: newSnakeY,
+    };
+  } else if (direction === "Up") {
+    newHead = {
+      x: newSnakeX,
+      y: newSnakeY - unit,
+    };
+  } else if (direction === "Down") {
+    newHead = {
+      x: newSnakeX,
+      y: newSnakeY + unit,
+    };
   }
   snake.pop();
   snake.unshift(newHead);
 };
 
-// const game = setInterval(keepDrawing, 100);
+const game = setInterval(keepDrawing, 100);

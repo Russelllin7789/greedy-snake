@@ -3,6 +3,8 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const unit = 20;
+const row = canvas.height / unit;
+const column = canvas.width / unit;
 let snake = [];
 let direction = "Right";
 
@@ -14,6 +16,20 @@ const createSnake = () => {
     { x: 20, y: 0 },
   ];
 };
+
+class Fruit {
+  constructor() {
+    this.x = Math.floor(Math.random() * column) * unit;
+    this.y = Math.floor(Math.random() * row) * unit;
+  }
+
+  drawFruit() {
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(this.x, this.y, unit, unit);
+  }
+}
+
+const myFruit = new Fruit();
 
 const changeDirection = (e) => {
   if (e.key === "ArrowUp" && direction !== "Down") {
@@ -36,6 +52,8 @@ const keepDrawing = () => {
   // reset canvas
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  myFruit.drawFruit();
 
   for (let i = 0; i < snake.length; i++) {
     if (i === 0) {

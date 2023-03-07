@@ -27,6 +27,10 @@ class Fruit {
     ctx.fillStyle = "yellow";
     ctx.fillRect(this.x, this.y, unit, unit);
   }
+
+  pickLocation() {
+    // TODO: pick a new fruit location for game
+  }
 }
 
 const myFruit = new Fruit();
@@ -53,6 +57,7 @@ const keepDrawing = () => {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  // draw fruit first and then snake's body
   myFruit.drawFruit();
 
   for (let i = 0; i < snake.length; i++) {

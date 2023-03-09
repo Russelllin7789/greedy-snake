@@ -29,7 +29,30 @@ class Fruit {
   }
 
   pickLocation() {
-    // TODO: pick a new fruit location for game
+    let overlapping = false;
+    let newFruitX;
+    let newFruitY;
+
+    function checkOverlap(x, y) {
+      for (let i = 0; i < snake.length; i++) {
+        if (snake[i].x === x && snake[i].y === y) {
+          overlapping = true;
+          return;
+        } else {
+          overlapping = false;
+        }
+      }
+    }
+
+    do {
+      newFruitX = Math.floor(Math.random() * column) * unit;
+      newFruitY = Math.floor(Math.random() * row) * unit;
+      checkOverlap(newFruitX, newFruitY);
+    } while (overlapping);
+
+    // if !overlapping, then align the x & y with newFruitX and newFruitY
+    this.x = newFruitX;
+    this.y = newFruitY;
   }
 }
 
@@ -108,7 +131,13 @@ const keepDrawing = () => {
       y: newSnakeY + unit,
     };
   }
-  snake.pop();
+
+  // check if snake ate the fruit
+  if (snake[0].x === myFruit.x && snake[0].y === myFruit.y) {
+    myFruit.pickLocation();
+  } else {
+    snake.pop();
+  }
   snake.unshift(newHead);
 };
 

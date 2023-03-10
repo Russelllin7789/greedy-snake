@@ -58,6 +58,21 @@ class Fruit {
 
 createSnake();
 const myFruit = new Fruit();
+
+let score = 0;
+document.getElementById("scoreNum").innerHTML = score;
+const loadRecord = () => {
+  const recordScore = localStorage.getItem("highest-score");
+  if (recordScore) {
+    record = Number(recordScore);
+  } else {
+    record = 0;
+  }
+};
+let record;
+loadRecord();
+document.getElementById("recordNum").innerHTML = record;
+
 const changeDirection = (e) => {
   if (e.key === "ArrowUp" && direction !== "Down") {
     direction = "Up";
@@ -68,10 +83,18 @@ const changeDirection = (e) => {
   } else if (e.key === "ArrowRight" && direction !== "Left") {
     direction = "Right";
   }
+  // will not trigger change direction until snake's head repaint (prevent twice above clicks happen within 100 milisecs)
+  window.removeEventListener("keydown", changeDirection);
 };
-
 // check if player pressed one of the directions
 window.addEventListener("keydown", changeDirection);
+
+const setRecord = (score) => {
+  if (score > record) {
+    localStorage.setItem("highest-score", score);
+    record = score;
+  }
+};
 
 const keepDrawing = () => {
   // check if snake bite himself/herself
@@ -142,10 +165,15 @@ const keepDrawing = () => {
   // check if snake ate the fruit
   if (snake[0].x === myFruit.x && snake[0].y === myFruit.y) {
     myFruit.pickLocation();
+    score++;
+    setRecord(score);
+    document.getElementById("scoreNum").innerHTML = score;
+    document.getElementById("recordNum").innerHTML = record;
   } else {
     snake.pop();
   }
   snake.unshift(newHead);
+  window.addEventListener("keydown", changeDirection);
 };
 
 const game = setInterval(keepDrawing, 100);

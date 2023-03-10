@@ -56,8 +56,8 @@ class Fruit {
   }
 }
 
+createSnake();
 const myFruit = new Fruit();
-
 const changeDirection = (e) => {
   if (e.key === "ArrowUp" && direction !== "Down") {
     direction = "Up";
@@ -73,9 +73,16 @@ const changeDirection = (e) => {
 // check if player pressed one of the directions
 window.addEventListener("keydown", changeDirection);
 
-createSnake();
-
 const keepDrawing = () => {
+  // check if snake bite himself/herself
+  for (let i = 1; i < snake.length; i++) {
+    if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
+      clearInterval(game);
+      alert("Game Over!");
+      return;
+    }
+  }
+
   // reset canvas
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
